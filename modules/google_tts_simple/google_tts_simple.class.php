@@ -161,7 +161,6 @@ class google_tts_simple extends module
 
     function processSubscription($event, &$details)
     {
-         DebMes(serialize($details));
         $this->getConfig();
         if ($this->config['DISABLED'])
             return;
@@ -172,8 +171,10 @@ class google_tts_simple extends module
                 $mmd5                       = md5($message);
                 $cached_filename            = ROOT . 'cms/cached/voice/sapi_' . $mmd5 . '.mp3';
                 $cachedVoiceDir             = ROOT . 'cms/cached/voice';
-                $details['CACHED_FILENAME'] = $cached_filename;
+                $details['filename'] = $cached_filename;
                 $details['tts_engine']      = 'google_tts';
+                $details['event'] = $event;
+                //$details['destination'] = $details['destination'];
 
                 $base_url = 'https://translate.google.com/translate_tts?';
 
@@ -188,7 +189,6 @@ class google_tts_simple extends module
                         //'speaker' => $speaker,
                         //'key' => $accessKey,
                     );
-                    DebMes(serialize($query));
                     $qs    = http_build_query($query);
 
                     try {
